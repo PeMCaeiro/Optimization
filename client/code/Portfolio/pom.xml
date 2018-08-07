@@ -1,0 +1,182 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ist.spark</groupId>
+  <artifactId>portfolio</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>PortfolioOptimization</name>
+  <description></description>
+  <inceptionYear>2018</inceptionYear>
+  <!-- Example of a non-restrictive license (MIT)
+   <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+   -->
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <scala_2.11-base.version>2.11</scala_2.11-base.version>
+    <scala_2.11.version>2.11.11</scala_2.11.version>
+    <spark.version>2.3.0.cloudera2</spark.version>
+    <scala-maven-plugin.version>3.4.2</scala-maven-plugin.version>
+    <scala.tools.version>2.11</scala.tools.version>
+  </properties>
+
+  <repositories>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/content/groups/cloudera-repos</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+        	<id>Scalaz Bintray Repo</id>
+        	<url>http://dl.bintray.com/scalaz/releases/</url>
+        </repository>
+  </repositories>
+
+  <dependencies>
+	  <dependency>
+	    <groupId>org.scala-lang</groupId>
+	    <artifactId>scala-library</artifactId>
+	    <version>${scala_2.11.version}</version>
+	    <scope>compile</scope>
+	  </dependency>
+	  <dependency>
+	    <groupId>org.apache.spark</groupId>
+	    <artifactId>spark-core_2.11</artifactId>
+	    <version>${spark.version}</version>
+	    <scope>provided</scope>
+	  </dependency>
+	  <dependency>
+	    <groupId>org.apache.spark</groupId>
+	    <artifactId>spark-sql_2.11</artifactId>
+	    <version>${spark.version}</version>
+	    <scope>provided</scope>
+	  </dependency>
+	  <dependency>
+	    <groupId>org.apache.spark</groupId>
+	    <artifactId>spark-yarn_2.11</artifactId>
+	    <version>${spark.version}</version>
+	    <scope>provided</scope>
+	  </dependency>
+	  <dependency>
+    	<groupId>org.scalaz.stream</groupId>
+    	<artifactId>scalaz-stream_${scala.tools.version}</artifactId>
+    	<version>snapshot-0.7a</version>
+    	<scope>compile</scope>
+	  </dependency>
+	  
+	  <!-- Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.specs2</groupId>
+      <artifactId>specs2_${scala.tools.version}</artifactId>
+      <version>3.3.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_${scala.tools.version}</artifactId>
+      <version>3.0.0-RC1</version>
+      <scope>test</scope>
+    </dependency>
+	  
+  </dependencies>
+  
+  <pluginRepositories>
+	<pluginRepository>
+	  <id>scala-tools.org</id>
+	  <name>Scala-tools Maven2 Repository</name>
+	  <url>http://scala-tools.org/repo-releases</url>
+	</pluginRepository>
+  </pluginRepositories>
+  
+  <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+    
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+          <exclude>**/*.scala</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    
+	<plugins>
+
+      <plugin>
+        <!-- see http://davidb.github.com/scala-maven-plugin -->
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <args>
+                <arg>-dependencyfile</arg>
+                <arg>${project.build.directory}/.scala_dependencies</arg>
+              </args>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+        <configuration>
+          <useFile>false</useFile>
+          <disableXmlReport>true</disableXmlReport>
+          <!-- If you have classpath issue like NoDefClassError,... -->
+          <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
+          <includes>
+            <include>**/*Test.*</include>
+            <include>**/*Suite.*</include>
+          </includes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+	</plugins>
+  </build>
+</project>
