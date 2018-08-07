@@ -1,0 +1,17 @@
+ipconfig
+
+Change to Bridged in the  VM
+
+cat /etc/hosts
+
+change quickstart.cloudera
+
+______________
+
+get into resources config .xml
+
+get into hdfs the spark2 jars
+
+______________
+
+python 2.7  _ scl enable python27 bash

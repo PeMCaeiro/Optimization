@@ -1,0 +1,50 @@
+"hdfs://quickstart.cloudera:8020/user/cloudera/data/ALTR.LS.csv"
+
+spark-shell --jars /usr/lib/spark/lib/spark-csv_2.10-1.5.0.jar,/usr/lib/spark/lib/commons-csv-1.4.jar
+
+val df = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("inferSchema","true").option("delimiter",";").load("hdfs://quickstart.cloudera:8020/user/cloudera/data/ALTR.LS.csv")
+
+
+
+object SparkTest {
+  def main(args: Array[String]) {
+  
+    val spark = org.apache.spark.sql.SparkSession.builder
+        .master("local")
+        .appName("Spark CSV Reader")
+        .getOrCreate;
+    
+    val df = spark.read
+        .format("csv")
+        .option("header", "true") //reading the headers
+        .option("mode", "DROPMALFORMED")
+        .option("delimiter",";")
+        .load("hdfs://quickstart.cloudera:8020/user/cloudera/data/ALTR.LS.csv")
+        
+    System.out.println(df.show())
+  }
+}
+
+
+
+
+package Test
+
+object SparkTest {
+	def main(args: Array[String]) {
+  
+    val spark = org.apache.spark.sql.SparkSession.builder
+        .master("yarn")
+        .appName("SparkTest")
+        .getOrCreate;
+    
+    val df = spark.read
+        .format("csv")
+        .option("header", "true") //reading the headers
+        .option("mode", "DROPMALFORMED")
+        .option("delimiter",";")
+        .load("hdfs://quickstart.cloudera:8020/user/cloudera/data/ALTR.LS.csv")
+        
+    System.out.println(df.show())
+	}
+}

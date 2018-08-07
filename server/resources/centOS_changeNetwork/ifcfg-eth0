@@ -1,0 +1,23 @@
+DEVICE="eth0"
+BOOTPROTO="none"
+DHCP_HOSTNAME="quickstart.cloudera"
+HOSTNAME="quickstart.cloudera"
+HWADDR="08:00:27:B2:38:58"
+IPV6INIT="no"
+MTU="1500"
+NM_CONTROLLED="yes"
+ONBOOT="yes"
+TYPE="Ethernet"
+UUID="3c9f6b19-1b8e-4787-abc8-852b82774a1b"
+#Custom#
+# Set dns servers #
+DNS1=8.8.8.8
+DNS2=8.8.4.4
+DEFROUTE="yes"
+IPV4_FAILURE_FATAL="no"
+# Server IP #
+IPADDR=192.168.1.244
+# Subnet #
+PREFIX=24
+# Set default gateway IP #
+GATEWAY=192.168.1.1

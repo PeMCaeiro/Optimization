@@ -1,0 +1,4 @@
+#how to install git v2 - compatible with gitHub on CentOS6.x
+sudo yum install http://opensource.wandisco.com/centos/6/git/x86_64/wandisco-git-release-6-1.noarch.rpm
+sudo yum install git
+sudo yum update -y nss curl libcurl
